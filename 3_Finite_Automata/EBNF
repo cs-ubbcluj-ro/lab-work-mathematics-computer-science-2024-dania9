@@ -1,0 +1,15 @@
+EBNF
+<file>               ::= <states-line> <alphabet-line> <initial-state-line> <final-states-line> <transitions-header> <transitions>
+<states-line>        ::= <state> {" " <state>}
+<alphabet-line>      ::= <symbol> {" " <symbol>}
+<initial-state-line> ::=  <state>
+<final-states-line>  ::= <state> {" " <state>}
+<transitions-header> ::= "Transitions:"
+<transitions>        ::= <transition> {"\n" <transition>}
+<transition>         ::= <state> " " <symbol> " " <state>
+<state>              ::= <identifier>
+<symbol>             ::= <character>
+<identifier>         ::= <letter> {<letter> | <digit>}
+<letter>             ::= "a" | ... | "z" | "A" | ... | "Z"
+<digit>              ::= "0" | "1" | ... | "9"
+<character>          ::= <printable-char>
