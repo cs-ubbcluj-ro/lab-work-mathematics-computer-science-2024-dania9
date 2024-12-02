@@ -1,0 +1,73 @@
+Program -> DeclarationList ";" CompoundStatement "."
+
+DeclarationList -> Declaration 
+                | Declaration ";" DeclarationList
+
+Declaration -> Identifier ":" Type
+
+Type -> "int" 
+     | "char" 
+     | "boolean" 
+     | "struct"
+
+CompoundStatement -> "{" StatementList "}"
+
+StatementList -> Statement 
+              | Statement ";" StatementList
+
+Statement -> SimpleStatement 
+          | IfStatement 
+          | ForStatement 
+          | FunctionStatement
+
+SimpleStatement -> AssignmentStatement 
+                 | IOStatement
+
+AssignmentStatement -> Identifier ":=" Expression
+
+IOStatement -> "cin" ">>" Identifier 
+            | "cout" "<<" Identifier
+
+IfStatement -> "if" Condition "{" StatementList "}" 
+             | "if" Condition "{" StatementList "}" "else" "{" StatementList "}"
+
+ForStatement -> "for" "(" AssignmentStatement ";" Condition ";" AssignmentStatement ")" "{" StatementList "}"
+
+FunctionStatement -> Type Identifier "(" ArgumentsList ")" "{" StatementList "return" Expression ";" "}"
+
+ArgumentsList -> Identifier ":" Type 
+               | Identifier ":" Type "," ArgumentsList
+
+Expression -> Expression "+" Term 
+           | Expression "-" Term 
+           | Term
+
+Term -> Term "*" Factor 
+     | Term "/" Factor 
+     | Factor
+
+Factor -> Identifier 
+       | Constant 
+       | "(" Expression ")"
+
+Condition -> Expression Relation Expression
+
+Relation -> ">" 
+          | "<" 
+          | "=" 
+          | "<>" 
+          | ">=" 
+          | "<="
+
+Identifier -> Letter (Letter | Digit)*
+
+Letter -> "A" | "B" | ... | "Z" | "a" | "b" | ... | "z"
+
+Digit -> "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+Constant -> Number 
+          | Character
+
+Number -> Digit+
+
+Character -> "'" Letter "'"
