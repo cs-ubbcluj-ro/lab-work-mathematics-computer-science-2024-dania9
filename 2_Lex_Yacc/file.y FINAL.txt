@@ -7,7 +7,7 @@ int yylex(void);
 void yyerror(const char *s);
 %}
 
-// Declare tokens
+
 %token CIN COUT SHL SHR IDENTIFIER NUMBER CHARACTER
 %token INT CHAR IF ELSE FOR RETURN ASSIGN NEQ LEQ GEQ LT GT PLUS MINUS MUL DIV COLON COLON_ASSIGN LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA DOT
 %token START
@@ -22,10 +22,12 @@ void yyerror(const char *s);
     char *str;      
 }
 
+
+
 %%
 
 start:
-    '{' stmtlist '}'
+     START LBRACE stmtlist RBRACE
     {
         printf("Program syntactic correct\n");
         printf("Rule: 1\n");
@@ -33,13 +35,13 @@ start:
     ;
 
 stmtlist:
-    stmt
-    | stmt stmtlist
+    stmt stmtlist
     | /* empty */
     {
         printf("Rule: 2\n");
     }
     ;
+
 
 stmt:
     assignstmt
@@ -47,7 +49,7 @@ stmt:
     | iostmt
     | ifstmt
     | forstmt
-    | IDENTIFIER
+    | IDENTIFIER 
     {
         printf("Rule: 3\n");
     }
