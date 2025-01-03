@@ -1,0 +1,150 @@
+%{
+#include "file.tab.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+int yylex(void);
+void yyerror(const char *s);
+%}
+
+// Declare tokens
+%token CIN COUT SHL SHR IDENTIFIER NUMBER CHARACTER
+%token INT CHAR IF ELSE FOR RETURN ASSIGN NEQ LEQ GEQ LT GT PLUS MINUS MUL DIV COLON COLON_ASSIGN LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA DOT
+%token START
+%debug
+%left PLUS MINUS
+%left MUL DIV
+%right ASSIGN
+%nonassoc LT GT EQ NEQ LEQ GEQ
+%left ELSE
+%union {
+    int num;        
+    char *str;      
+}
+
+%%
+
+start:
+    '{' stmtlist '}'
+    {
+        printf("Program syntactic correct\n");
+        printf("Rule: 1\n");
+    }
+    ;
+
+stmtlist:
+    stmt
+    | stmt stmtlist
+    | /* empty */
+    {
+        printf("Rule: 2\n");
+    }
+    ;
+
+stmt:
+    assignstmt
+    | declstmt
+    | iostmt
+    | ifstmt
+    | forstmt
+    | IDENTIFIER
+    {
+        printf("Rule: 3\n");
+    }
+    ;
+
+
+    
+assignstmt:
+    IDENTIFIER COLON_ASSIGN expression
+    {
+        printf("Rule: 4\n");
+    }
+    ;
+
+declstmt:
+    type IDENTIFIER
+    {
+        printf("Rule: 5\n");
+    }
+    ;
+
+
+iostmt:
+    CIN SHR IDENTIFIER
+    | COUT SHL expression
+    {
+        printf("Rule: 6\n");
+    }
+    ;
+
+
+ifstmt:
+    IF LPAREN relational_expression RPAREN stmt
+    {
+        printf("Rule: 7\n");
+    }
+    ;
+
+relational_expression:
+    expression GT expression
+    | expression LT expression
+    | expression GEQ expression
+    | expression LEQ expression
+    | expression NEQ expression
+    ;
+
+forstmt:
+    FOR LPAREN declstmt stmt stmt RPAREN
+    {
+        printf("Rule: 8\n");
+    }
+    ;
+
+type:
+    INT
+    | CHAR
+    {
+        printf("Rule: 9\n");
+    }
+    ;
+
+expression:
+      term
+  | expression PLUS term
+  | expression MINUS term
+    {
+        printf("Rule: 10\n");
+    }
+    ;
+
+term:
+     factor
+  | term MUL factor
+  | term DIV factor
+    {
+        printf("Rule: 11\n");
+    }
+    ;
+
+factor:
+      IDENTIFIER
+    | NUMBER
+    | LPAREN expression RPAREN
+    {
+        printf("Rule: 12\n");
+    }
+    ;
+
+%%
+
+int main() {
+    yydebug = 1; 
+    int token;
+    yyparse();
+    return 0;
+}
+
+void yyerror(const char *s) {
+    fprintf(stderr, "Syntax error: %s\n", s);
+}
