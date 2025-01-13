@@ -11,7 +11,8 @@ void yyerror(const char *s);
 %token CIN COUT SHL SHR IDENTIFIER NUMBER CHARACTER
 %token INT CHAR IF ELSE FOR RETURN ASSIGN NEQ LEQ GEQ LT GT PLUS MINUS MUL DIV COLON COLON_ASSIGN LPAREN RPAREN LBRACE RBRACE SEMICOLON COMMA DOT
 %token START
-%debug
+%token ERROR
+
 %left PLUS MINUS
 %left MUL DIV
 %right ASSIGN
@@ -94,12 +95,15 @@ relational_expression:
     | expression GEQ expression
     | expression LEQ expression
     | expression NEQ expression
+    {
+        printf("Rule: 8\n");
+    }
     ;
 
 forstmt:
     FOR LPAREN declstmt stmt stmt RPAREN
     {
-        printf("Rule: 8\n");
+        printf("Rule: 9\n");
     }
     ;
 
@@ -107,7 +111,7 @@ type:
     INT
     | CHAR
     {
-        printf("Rule: 9\n");
+        printf("Rule: 10\n");
     }
     ;
 
@@ -116,7 +120,7 @@ expression:
   | expression PLUS term
   | expression MINUS term
     {
-        printf("Rule: 10\n");
+        printf("Rule: 11\n");
     }
     ;
 
@@ -125,7 +129,7 @@ term:
   | term MUL factor
   | term DIV factor
     {
-        printf("Rule: 11\n");
+        printf("Rule: 12\n");
     }
     ;
 
@@ -134,14 +138,14 @@ factor:
     | NUMBER
     | LPAREN expression RPAREN
     {
-        printf("Rule: 12\n");
+        printf("Rule: 13\n");
     }
     ;
 
 %%
 
 int main() {
-    yydebug = 1; 
+    
     int token;
     yyparse();
     return 0;
